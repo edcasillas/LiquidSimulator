@@ -5,6 +5,7 @@ namespace Liquids2D {
 	public interface ILiquidContainer {
 		Vector2Int GridSize { get; }
 		float CellSize { get; }
+		float LineWidth { get; }
 	}
 
 	public class LiquidContainer : MonoBehaviour, ILiquidContainer {
@@ -24,7 +25,9 @@ namespace Liquids2D {
 
 		[SerializeField]
 		[Range(0f, 0.1f)]
-		private float LineWidth = 0;
+		private float lineWidth = 0;
+
+		public float LineWidth => lineWidth;
 
 		private float PreviousLineWidth = 0;
 
@@ -67,17 +70,17 @@ namespace Liquids2D {
 			Vector2 offset = transform.position;
 
 			// Organize the grid objects
-			GameObject cellContainer = new GameObject ("Cells");
-			cellContainer.transform.parent = transform;
+			var cellContainer = new GameObject ("Cells").transform;
+			cellContainer.parent = transform;
 
-			if(gridLineRenderer.IsValid()) gridLineRenderer.CreateGridLines(offset, LineWidth, this);
+			if(gridLineRenderer.IsValid()) gridLineRenderer.CreateGridLines(offset, this);
 
 			// Cells
 			for (int x = 0; x < gridSize.x; x++) {
 				for (int y = 0; y < gridSize.y; y++) {
 					Cell cell = Instantiate(cellPrefab);
-					float xpos = offset.x + (x * cellSize) + (LineWidth * x) + LineWidth;
-					float ypos = offset.y - (y * cellSize) - (LineWidth * y) - LineWidth;
+					float xpos = offset.x + (x * cellSize) + (lineWidth * x) + lineWidth;
+					float ypos = offset.y - (y * cellSize) - (lineWidth * y) - lineWidth;
 					cell.Set (x, y, new Vector2 (xpos, ypos), cellSize, liquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
 
 					// add a border
@@ -85,7 +88,7 @@ namespace Liquids2D {
 						cell.SetType ( CellType.Solid );
 					}
 
-					cell.transform.parent = cellContainer.transform;
+					cell.transform.parent = cellContainer;
 					Cells [x, y] = cell;
 				}
 			}
@@ -97,13 +100,13 @@ namespace Liquids2D {
 
 			Vector2 offset = this.transform.position;
 
-			if(gridLineRenderer.IsValid()) gridLineRenderer.RenderGridLines(offset, LineWidth, this);
+			if(gridLineRenderer.IsValid()) gridLineRenderer.RenderGridLines(offset, this);
 
 			// Cells
 			for (int x = 0; x < gridSize.x; x++) {
 				for (int y = 0; y < gridSize.y; y++) {
-					float xpos = offset.x + (x * cellSize) + (LineWidth * x) + LineWidth;
-					float ypos = offset.y - (y * cellSize) - (LineWidth * y) - LineWidth;
+					float xpos = offset.x + (x * cellSize) + (lineWidth * x) + lineWidth;
+					float ypos = offset.y - (y * cellSize) - (lineWidth * y) - lineWidth;
 					Cells [x, y].Set (x, y, new Vector2 (xpos, ypos), cellSize, liquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
 				}
 			}
@@ -137,14 +140,14 @@ namespace Liquids2D {
 		private void Update () {
 
 			// Update grid lines and cell size
-			if (PreviousCellSize != cellSize || PreviousLineColor != LineColor || PreviousLineWidth != LineWidth) {
+			if (PreviousCellSize != cellSize || PreviousLineColor != LineColor || PreviousLineWidth != lineWidth) {
 				RefreshGrid ();
 			}
 
 			// Convert mouse position to Grid Coordinates
 			Vector2 pos = camera2D.Camera.ScreenToWorldPoint (Input.mousePosition);
-			int x = (int)((pos.x - this.transform.position.x) / (cellSize + LineWidth));
-			int y = -(int)((pos.y - this.transform.position.y) / (cellSize + LineWidth));
+			int x = (int)((pos.x - this.transform.position.x) / (cellSize + lineWidth));
+			int y = -(int)((pos.y - this.transform.position.y) / (cellSize + lineWidth));
 
 			// Check if we are filling or erasing walls
 			if (Input.GetMouseButtonDown (0)) {
