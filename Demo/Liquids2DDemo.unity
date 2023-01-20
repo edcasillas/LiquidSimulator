@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a7676b45d5681489f6ca73238e6755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: {x: 40, y: 40}
   camera2D: {fileID: 1665349193}
   View: {fileID: 457052759}
   cellPrefab: {fileID: 114000012976090690, guid: 92c50d86d81d90d45835ebd90384217d, type: 3}
@@ -204,7 +205,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ae8ef68ec84d2aa43ad113c30ba96108, type: 3}
   - {fileID: 21300000, guid: b7ddcb9413f870b44be2a9e09e5b1020, type: 3}
   - {fileID: 21300000, guid: 2d238938618a56740a9f24c99cff7296, type: 3}
-  CellSize: 0.75
+  cellSize: 0.75
   LineWidth: 0
   ShowFlow: 0
   RenderDownFlowingLiquid: 1
