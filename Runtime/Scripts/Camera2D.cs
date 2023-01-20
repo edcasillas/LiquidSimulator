@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Liquids2D {
 	[RequireComponent(typeof(Camera))]
 	public class Camera2D : EnhancedMonoBehaviour {
-		public Transform Area;
+		[SerializeField] private Transform target;
 
 		[ShowInInspector] public Vector3 CurrentPosition { get; private set; }
 		[ShowInInspector] public Vector3 CurrentScale { get; private set; }
@@ -17,9 +17,11 @@ namespace Liquids2D {
 			}
 		}
 
+		public Transform Target => target;
+
 		public void Set() {
-			var height = Area.localScale.y * 100;
-			var width = Area.localScale.x * 100;
+			var height = target.localScale.y * 100;
+			var width = target.localScale.x * 100;
 
 			var w = Screen.width / width;
 			var h = Screen.height / height;
@@ -32,7 +34,7 @@ namespace Liquids2D {
 
 			Camera.orthographicSize = size;
 
-			Vector2 position = Area.transform.position;
+			Vector2 position = target.transform.position;
 
 			Vector3 camPosition = position;
 			Vector3 point = Camera.WorldToViewportPoint(camPosition);
@@ -43,9 +45,9 @@ namespace Liquids2D {
 		}
 
 		public void LateUpdate() {
-			if (CurrentPosition != Area.transform.position || CurrentScale != Area.transform.localScale) {
-				CurrentPosition = Area.transform.position;
-				CurrentScale = Area.transform.localScale;
+			if (CurrentPosition != target.transform.position || CurrentScale != target.transform.localScale) {
+				CurrentPosition = target.transform.position;
+				CurrentScale = target.transform.localScale;
 				Set();
 			}
 		}

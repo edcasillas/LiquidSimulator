@@ -25,15 +25,16 @@ namespace Liquids2D {
 			var gridLinesParent = new GameObject ("GridLines").transform;
 			gridLinesParent.parent = transform;
 
+			var verticalLinesScale = container.VerticalLinesScale;
+			var horizontalLinesScale = container.HorizontalLinesScale;
+
 			// vertical grid lines
 			VerticalLines = new GridLine[container.GridSize.x + 1];
 			for (var x = 0; x < container.GridSize.x + 1; x++) {
 				var line = Instantiate(gridLinePrefab, gridLinesParent);
 				line.name = $"Vertical {x}";
 				var xpos = offset.x + (container.CellSize * x) + (container.LineWidth * x);
-				line.Set (color,
-					new Vector2 (xpos, offset.y),
-					new Vector2 (container.LineWidth, (container.GridSize.y*container.CellSize) + container.LineWidth * container.GridSize.y + container.LineWidth));
+				line.Set (color, new Vector2 (xpos, offset.y), verticalLinesScale);
 				VerticalLines [x] = line;
 			}
 
@@ -43,23 +44,26 @@ namespace Liquids2D {
 				var line = Instantiate(gridLinePrefab, gridLinesParent);
 				line.name = $"Horizontal {y}";
 				var ypos = offset.y - (container.CellSize * y) - (container.LineWidth * y);
-				line.Set (color, new Vector2 (offset.x, ypos), new Vector2 ((container.GridSize.x*container.CellSize) + container.LineWidth * container.GridSize.x + container.LineWidth, container.LineWidth));
+				line.Set(color, new Vector2(offset.x, ypos), horizontalLinesScale);
 				HorizontalLines [y] = line;
 			}
 		}
 
 		public void RenderGridLines(Vector2 offset, ILiquidContainer container) {
 			if (!enable) return;
+			var verticalLinesScale = container.VerticalLinesScale;
+			var horizontalLinesScale = container.HorizontalLinesScale;
+
 			// vertical grid lines
 			for (int x = 0; x < container.GridSize.x + 1; x++) {
-				float xpos = offset.x + (container.CellSize * x) + (container.LineWidth * x);
-				VerticalLines [x].Set (color, new Vector2 (xpos, offset.y), new Vector2 (container.LineWidth, (container.GridSize.y*container.CellSize) + container.LineWidth * container.GridSize.y + container.LineWidth));
+				var xpos = offset.x + (container.CellSize * x) + (container.LineWidth * x);
+				VerticalLines[x].Set(color, new Vector2(xpos, offset.y), verticalLinesScale);
 			}
 
 			// horizontal grid lines
 			for (int y = 0; y < container.GridSize.y + 1; y++) {
 				float ypos = offset.y - (container.CellSize * y) - (container.LineWidth * y);
-				HorizontalLines [y] .Set (color, new Vector2 (offset.x, ypos), new Vector2 ((container.GridSize.x*container.CellSize) + container.LineWidth * container.GridSize.x + container.LineWidth, container.LineWidth));
+				HorizontalLines [y] .Set (color, new Vector2 (offset.x, ypos), horizontalLinesScale);
 			}
 		}
 	}

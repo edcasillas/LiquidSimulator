@@ -1,4 +1,5 @@
-﻿using CommonUtils.UnityComponents;
+﻿using CommonUtils;
+using CommonUtils.UnityComponents;
 using UnityEngine;
 
 namespace Liquids2D {
@@ -6,12 +7,13 @@ namespace Liquids2D {
 		Vector2Int GridSize { get; }
 		float CellSize { get; }
 		float LineWidth { get; }
+		Vector2 HorizontalLinesScale { get; }
+		Vector2 VerticalLinesScale { get; }
 	}
 
-	public class LiquidContainer : MonoBehaviour, ILiquidContainer {
+	public class LiquidContainer : EnhancedMonoBehaviour, ILiquidContainer {
 		[SerializeField] private Vector2Int gridSize = new(80, 40);
 		[SerializeField] private Camera2D camera2D;
-		[SerializeField] private GameObject View; // Camera view
 		[SerializeField] private Cell cellPrefab;
 		[SerializeField] private Sprite[] liquidFlowSprites;
 
@@ -28,6 +30,8 @@ namespace Liquids2D {
 		private float lineWidth = 0;
 
 		public float LineWidth => lineWidth;
+		public float Height => (GridSize.y * CellSize) + LineWidth * GridSize.y + LineWidth;
+		public float Width => (GridSize.x * CellSize) + LineWidth * GridSize.x + LineWidth;
 
 		private float PreviousLineWidth = 0;
 
@@ -46,6 +50,9 @@ namespace Liquids2D {
 		private Cell[,] Cells;
 		private GridLine[] HorizontalLines => gridLineRenderer.HorizontalLines;
 		private GridLine[] VerticalLines => gridLineRenderer.VerticalLines;
+
+		[ShowInInspector] public Vector2 HorizontalLinesScale => new(Width, LineWidth);
+		[ShowInInspector] public Vector2 VerticalLinesScale => new(LineWidth, Height);
 
 		private LiquidSimulator LiquidSimulator;
 
@@ -112,8 +119,8 @@ namespace Liquids2D {
 			}
 
 			// Fit camera to grid
-			View.transform.position = this.transform.position + new Vector3(HorizontalLines [0].transform.localScale.x/2f, -VerticalLines [0].transform.localScale.y/2f);
-			View.transform.localScale = new Vector2 (HorizontalLines [0].transform.localScale.x, VerticalLines [0].transform.localScale.y);
+			camera2D.Target.position = transform.position + new Vector3(HorizontalLines [0].transform.localScale.x/2f, -VerticalLines [0].transform.localScale.y/2f);
+			camera2D.Target.localScale = new Vector2 (HorizontalLines [0].transform.localScale.x, VerticalLines [0].transform.localScale.y);
 			camera2D.Set();
 		}
 
