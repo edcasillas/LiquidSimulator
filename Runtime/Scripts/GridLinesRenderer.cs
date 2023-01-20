@@ -25,25 +25,25 @@ namespace Liquids2D {
 			gridLineContainer.transform.parent = this.transform;
 
 			// vertical grid lines
-			VerticalLines = new GridLine[Grid.Width + 1];
-			for (int x = 0; x < Grid.Width + 1; x++) {
+			VerticalLines = new GridLine[LiquidContainer.Width + 1];
+			for (int x = 0; x < LiquidContainer.Width + 1; x++) {
 				var line = Instantiate(gridLinePrefab);
 				line.name = $"Vertical {x}";
 				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
 				line.Set (color,
 					new Vector2 (xpos, offset.y),
-					new Vector2 (LineWidth, (Grid.Height*CellSize) + LineWidth * Grid.Height + LineWidth));
+					new Vector2 (LineWidth, (LiquidContainer.Height*CellSize) + LineWidth * LiquidContainer.Height + LineWidth));
 				line.transform.parent = gridLineContainer.transform;
 				VerticalLines [x] = line;
 			}
 
 			// horizontal grid lines
-			HorizontalLines = new GridLine[Grid.Height + 1];
-			for (int y = 0; y < Grid.Height + 1; y++) {
+			HorizontalLines = new GridLine[LiquidContainer.Height + 1];
+			for (int y = 0; y < LiquidContainer.Height + 1; y++) {
 				var line = Instantiate(gridLinePrefab);
 				line.name = $"Horizontal {y}";
 				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
-				line.Set (color, new Vector2 (offset.x, ypos), new Vector2 ((Grid.Width*CellSize) + LineWidth * Grid.Width + LineWidth, LineWidth));
+				line.Set (color, new Vector2 (offset.x, ypos), new Vector2 ((LiquidContainer.Width*CellSize) + LineWidth * LiquidContainer.Width + LineWidth, LineWidth));
 				line.transform.parent = gridLineContainer.transform;
 				HorizontalLines [y] = line;
 			}
@@ -52,15 +52,15 @@ namespace Liquids2D {
 		public void RenderGridLines(Vector2 offset, float CellSize, float LineWidth) {
 			if (!enable) return;
 			// vertical grid lines
-			for (int x = 0; x < Grid.Width + 1; x++) {
+			for (int x = 0; x < LiquidContainer.Width + 1; x++) {
 				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
-				VerticalLines [x].Set (color, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (Grid.Height*CellSize) + LineWidth * Grid.Height + LineWidth));
+				VerticalLines [x].Set (color, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (LiquidContainer.Height*CellSize) + LineWidth * LiquidContainer.Height + LineWidth));
 			}
 
 			// horizontal grid lines
-			for (int y = 0; y < Grid.Height + 1; y++) {
+			for (int y = 0; y < LiquidContainer.Height + 1; y++) {
 				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
-				HorizontalLines [y] .Set (color, new Vector2 (offset.x, ypos), new Vector2 ((Grid.Width*CellSize) + LineWidth * Grid.Width + LineWidth, LineWidth));
+				HorizontalLines [y] .Set (color, new Vector2 (offset.x, ypos), new Vector2 ((LiquidContainer.Width*CellSize) + LineWidth * LiquidContainer.Width + LineWidth, LineWidth));
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Liquids2D {
-	public class Grid : MonoBehaviour {
+	public class LiquidContainer : MonoBehaviour {
 		public const int Width = 80;
 		public const int Height = 40;
 
