@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CommonUtils.UnityComponents;
 using UnityEngine;
 
 namespace Liquids2D {
 	public class Grid : MonoBehaviour {
-		private const int width = 80;
-		private const int height = 40;
+		public const int Width = 80;
+		public const int Height = 40;
 
 		[SerializeField] private GameObject View; // Camera view
 		[SerializeField] private GridLine gridLinePrefab;
@@ -23,8 +23,7 @@ namespace Liquids2D {
 
 		private float PreviousLineWidth = 0;
 
-		[SerializeField]
-		private Color LineColor = Color.black;
+		private Color LineColor => gridLineRenderer.LColor;
 
 		private Color PreviousLineColor = Color.black;
 
@@ -35,14 +34,18 @@ namespace Liquids2D {
 		[SerializeField] private bool RenderFloatingLiquid = false;
 
 		private Cell[,] Cells;
-		private GridLine[] HorizontalLines;
-		private GridLine[] VerticalLines;
+		private GridLine[] HorizontalLines => gridLineRenderer.HorizontalLines;
+		private GridLine[] VerticalLines => gridLineRenderer.VerticalLines;
 
 		private LiquidSimulator LiquidSimulator;
 
 		private bool Fill;
 
+		private IGridLineRenderer gridLineRenderer;
+
 		private void Awake() {
+			gridLineRenderer = GetComponent<IGridLineRenderer>();
+
 			// Generate our viewable grid GameObjects
 			CreateGrid ();
 
@@ -53,45 +56,47 @@ namespace Liquids2D {
 
 		private void CreateGrid() {
 
-			Cells = new Cell[width, height];
+			Cells = new Cell[Width, Height];
 			Vector2 offset = this.transform.position;
 
 			// Organize the grid objects
-			GameObject gridLineContainer = new GameObject ("GridLines");
+			//GameObject gridLineContainer = new GameObject ("GridLines");
 			GameObject cellContainer = new GameObject ("Cells");
-			gridLineContainer.transform.parent = this.transform;
+			//gridLineContainer.transform.parent = this.transform;
 			cellContainer.transform.parent = this.transform;
 
 			// vertical grid lines
-			VerticalLines = new GridLine[width + 1];
-			for (int x = 0; x < width + 1; x++) {
+			/*VerticalLines = new GridLine[Width + 1];
+			for (int x = 0; x < Width + 1; x++) {
 				var line = Instantiate(gridLinePrefab);
 				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
-				line.Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (height*CellSize) + LineWidth * height + LineWidth));
+				line.Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (Height*CellSize) + LineWidth * Height + LineWidth));
 				line.transform.parent = gridLineContainer.transform;
 				VerticalLines [x] = line;
 			}
 
 			// horizontal grid lines
-			HorizontalLines = new GridLine[height + 1];
-			for (int y = 0; y < height + 1; y++) {
+			HorizontalLines = new GridLine[Height + 1];
+			for (int y = 0; y < Height + 1; y++) {
 				var line = Instantiate(gridLinePrefab);
 				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
-				line.Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((width*CellSize) + LineWidth * width + LineWidth, LineWidth));
+				line.Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((Width*CellSize) + LineWidth * Width + LineWidth, LineWidth));
 				line.transform.parent = gridLineContainer.transform;
 				HorizontalLines [y] = line;
-			}
+			}*/
+
+			if(gridLineRenderer.IsValid()) gridLineRenderer.CreateGridLines(offset, CellSize, LineWidth);
 
 			// Cells
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
+			for (int x = 0; x < Width; x++) {
+				for (int y = 0; y < Height; y++) {
 					Cell cell = Instantiate(cellPrefab);
 					float xpos = offset.x + (x * CellSize) + (LineWidth * x) + LineWidth;
 					float ypos = offset.y - (y * CellSize) - (LineWidth * y) - LineWidth;
 					cell.Set (x, y, new Vector2 (xpos, ypos), CellSize, liquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
 
 					// add a border
-					if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
+					if (x == 0 || y == 0 || x == Width - 1 || y == Height - 1) {
 						cell.SetType ( CellType.Solid );
 					}
 
@@ -108,20 +113,22 @@ namespace Liquids2D {
 			Vector2 offset = this.transform.position;
 
 			// vertical grid lines
-			for (int x = 0; x < width + 1; x++) {
+			/*for (int x = 0; x < Width + 1; x++) {
 				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
-				VerticalLines [x].Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (height*CellSize) + LineWidth * height + LineWidth));
+				VerticalLines [x].Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (Height*CellSize) + LineWidth * Height + LineWidth));
 			}
 
 			// horizontal grid lines
-			for (int y = 0; y < height + 1; y++) {
+			for (int y = 0; y < Height + 1; y++) {
 				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
-				HorizontalLines [y] .Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((width*CellSize) + LineWidth * width + LineWidth, LineWidth));
-			}
+				HorizontalLines [y] .Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((Width*CellSize) + LineWidth * Width + LineWidth, LineWidth));
+			}*/
+
+			if(gridLineRenderer.IsValid()) gridLineRenderer.RenderGridLines(offset, CellSize, LineWidth);
 
 			// Cells
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
+			for (int x = 0; x < Width; x++) {
+				for (int y = 0; y < Height; y++) {
 					float xpos = offset.x + (x * CellSize) + (LineWidth * x) + LineWidth;
 					float ypos = offset.y - (y * CellSize) - (LineWidth * y) - LineWidth;
 					Cells [x, y].Set (x, y, new Vector2 (xpos, ypos), CellSize, liquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
@@ -136,18 +143,18 @@ namespace Liquids2D {
 
 		// Sets neighboring cell references
 		private void UpdateNeighbors() {
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
+			for (int x = 0; x < Width; x++) {
+				for (int y = 0; y < Height; y++) {
 					if (x > 0) {
 						Cells[x, y].Left = Cells [x - 1, y];
 					}
-					if (x < width - 1) {
+					if (x < Width - 1) {
 						Cells[x, y].Right = Cells [x + 1, y];
 					}
 					if (y > 0) {
 						Cells[x, y].Top = Cells [x, y - 1];
 					}
-					if (y < height - 1) {
+					if (y < Height - 1) {
 						Cells[x, y].Bottom = Cells [x, y + 1];
 					}
 				}
@@ -179,7 +186,7 @@ namespace Liquids2D {
 
 			// Left click draws/erases walls
 			if (Input.GetMouseButton (0)) {
-				if (x != 0 && y != 0 && x != width - 1 && y != height - 1) {
+				if (x != 0 && y != 0 && x != Width - 1 && y != Height - 1) {
 					if ((x > 0 && x < Cells.GetLength (0)) && (y > 0 && y < Cells.GetLength (1))) {
 						if (Fill) {
 							Cells [x, y].SetType(CellType.Solid);

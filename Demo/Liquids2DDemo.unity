@@ -164,6 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 674630753}
   - component: {fileID: 674630752}
+  - component: {fileID: 674630754}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -205,7 +206,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2d238938618a56740a9f24c99cff7296, type: 3}
   CellSize: 0.75
   LineWidth: 0
-  LineColor: {r: 0.80784315, g: 0.80784315, b: 0.80784315, a: 1}
   ShowFlow: 0
   RenderDownFlowingLiquid: 1
   RenderFloatingLiquid: 1
@@ -224,6 +224,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &674630754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674630751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff822b38764702842b842283a98c6510, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLinePrefab: {fileID: 114000011244685664, guid: 26fdeb8f28d5d36479af6cbd7bd09f88, type: 3}
+  LineColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!850595691 &1584461849
 LightingSettings:
   m_ObjectHideFlags: 0
