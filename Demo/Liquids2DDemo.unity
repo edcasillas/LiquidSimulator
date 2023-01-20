@@ -184,10 +184,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   View: {fileID: 457052759}
+  gridLinePrefab: {fileID: 114000011244685664, guid: 26fdeb8f28d5d36479af6cbd7bd09f88, type: 3}
+  cellPrefab: {fileID: 114000012976090690, guid: 6078e622ca9a0eb469e237588e34c57c, type: 3}
+  liquidFlowSprites:
+  - {fileID: 21300000, guid: 91809f9f9bd16fc48bf2e0dd922d2de9, type: 3}
+  - {fileID: 21300000, guid: 828e55a51dd45c546af6b8f8df4b5dd5, type: 3}
+  - {fileID: 21300000, guid: 7d0a880074cf5b845b1a54c1044f411c, type: 3}
+  - {fileID: 21300000, guid: 663dc21f4f94eaf43851457e382f6a28, type: 3}
+  - {fileID: 21300000, guid: 54798520afd123e4fa90b39aa74b5abd, type: 3}
+  - {fileID: 21300000, guid: 22df79c6a43e24f43855c9d7efa47409, type: 3}
+  - {fileID: 21300000, guid: f8d5925959df2f544b139decc442c8f0, type: 3}
+  - {fileID: 21300000, guid: adaf5d03ace449646967c612b30e8d22, type: 3}
+  - {fileID: 21300000, guid: ceabf23488c7daa4cbf39ad1cba6773a, type: 3}
+  - {fileID: 21300000, guid: 26baf3af7f3fc204b8a3cf9454fc2ccd, type: 3}
+  - {fileID: 21300000, guid: ffbfb274e77fb7041a79b58971855cf7, type: 3}
+  - {fileID: 21300000, guid: 2f3dab00ace927341a746483813f6ea7, type: 3}
+  - {fileID: 21300000, guid: 3fa52b806f59d0d49adfcc566891e587, type: 3}
+  - {fileID: 21300000, guid: ae8ef68ec84d2aa43ad113c30ba96108, type: 3}
+  - {fileID: 21300000, guid: b7ddcb9413f870b44be2a9e09e5b1020, type: 3}
+  - {fileID: 21300000, guid: 2d238938618a56740a9f24c99cff7296, type: 3}
   CellSize: 0.75
   LineWidth: 0
   LineColor: {r: 0.80784315, g: 0.80784315, b: 0.80784315, a: 1}
-  ShowFlow: 1
+  ShowFlow: 0
   RenderDownFlowingLiquid: 1
   RenderFloatingLiquid: 1
 --- !u!4 &674630753
@@ -314,7 +333,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.5527785, g: 0.8018868, b: 0.494749, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

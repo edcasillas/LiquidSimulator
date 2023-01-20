@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Liquids2D {
 	public class Grid : MonoBehaviour {
@@ -6,6 +7,9 @@ namespace Liquids2D {
 		private const int height = 40;
 
 		[SerializeField] private GameObject View; // Camera view
+		[SerializeField] private GridLine gridLinePrefab;
+		[SerializeField] private Cell cellPrefab;
+		[SerializeField] private Sprite[] liquidFlowSprites;
 
 		[SerializeField]
 		[Range(0.1f, 1f)]
@@ -27,32 +31,24 @@ namespace Liquids2D {
 		[SerializeField]
 		private bool ShowFlow = true;
 
-		[SerializeField]
-		private bool RenderDownFlowingLiquid = false;
-
-		[SerializeField]
-		private bool RenderFloatingLiquid = false;
+		[SerializeField] private bool RenderDownFlowingLiquid = false;
+		[SerializeField] private bool RenderFloatingLiquid = false;
 
 		private Cell[,] Cells;
 		private GridLine[] HorizontalLines;
 		private GridLine[] VerticalLines;
 
-		private Liquid LiquidSimulator;
-		private Sprite[] LiquidFlowSprites;
-
+		private LiquidSimulator LiquidSimulator;
 
 		private bool Fill;
 
 		private void Awake() {
-			// Load some sprites to show the liquid flow directions
-			LiquidFlowSprites = Resources.LoadAll <Sprite>("LiquidFlowSprites");
-
 			// Generate our viewable grid GameObjects
 			CreateGrid ();
 
 			// Initialize the liquid simulator
-			LiquidSimulator = new Liquid ();
-			LiquidSimulator.Initialize (Cells);
+			LiquidSimulator = new LiquidSimulator ();
+			LiquidSimulator.Initialize(Cells);
 		}
 
 		private void CreateGrid() {
@@ -69,7 +65,7 @@ namespace Liquids2D {
 			// vertical grid lines
 			VerticalLines = new GridLine[width + 1];
 			for (int x = 0; x < width + 1; x++) {
-				GridLine line = (GameObject.Instantiate (Resources.Load ("GridLine") as GameObject)).GetComponent<GridLine> ();
+				var line = Instantiate(gridLinePrefab);
 				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
 				line.Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (height*CellSize) + LineWidth * height + LineWidth));
 				line.transform.parent = gridLineContainer.transform;
@@ -79,7 +75,7 @@ namespace Liquids2D {
 			// horizontal grid lines
 			HorizontalLines = new GridLine[height + 1];
 			for (int y = 0; y < height + 1; y++) {
-				GridLine line = (GameObject.Instantiate (Resources.Load ("GridLine") as GameObject)).GetComponent<GridLine> ();
+				var line = Instantiate(gridLinePrefab);
 				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
 				line.Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((width*CellSize) + LineWidth * width + LineWidth, LineWidth));
 				line.transform.parent = gridLineContainer.transform;
@@ -89,10 +85,10 @@ namespace Liquids2D {
 			// Cells
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
-					Cell cell = (GameObject.Instantiate (Resources.Load ("Cell") as GameObject)).GetComponent<Cell>();
+					Cell cell = Instantiate(cellPrefab);
 					float xpos = offset.x + (x * CellSize) + (LineWidth * x) + LineWidth;
 					float ypos = offset.y - (y * CellSize) - (LineWidth * y) - LineWidth;
-					cell.Set (x, y, new Vector2 (xpos, ypos), CellSize, LiquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
+					cell.Set (x, y, new Vector2 (xpos, ypos), CellSize, liquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
 
 					// add a border
 					if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
@@ -128,8 +124,7 @@ namespace Liquids2D {
 				for (int y = 0; y < height; y++) {
 					float xpos = offset.x + (x * CellSize) + (LineWidth * x) + LineWidth;
 					float ypos = offset.y - (y * CellSize) - (LineWidth * y) - LineWidth;
-					Cells [x, y].Set (x, y, new Vector2 (xpos, ypos), CellSize, LiquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
-
+					Cells [x, y].Set (x, y, new Vector2 (xpos, ypos), CellSize, liquidFlowSprites, ShowFlow, RenderDownFlowingLiquid, RenderFloatingLiquid);
 				}
 			}
 
@@ -206,5 +201,7 @@ namespace Liquids2D {
 			LiquidSimulator.Simulate (ref Cells);
 		}
 
+		// Load some sprites to show the liquid flow directions
+		private void Reset() => liquidFlowSprites = Resources.LoadAll<Sprite>("LiquidFlowSprites");
 	}
 }

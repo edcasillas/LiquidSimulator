@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 28a7676b45d5681489f6ca73238e6755
-timeCreated: 1485361765
-licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - View: {instanceID: 0}
+  - gridLinePrefab: {fileID: 114000011244685664, guid: 26fdeb8f28d5d36479af6cbd7bd09f88, type: 3}
+  - cellPrefab: {fileID: 114000012976090690, guid: 6078e622ca9a0eb469e237588e34c57c, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
