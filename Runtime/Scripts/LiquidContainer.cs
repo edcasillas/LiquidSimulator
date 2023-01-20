@@ -1,5 +1,6 @@
 ﻿using CommonUtils;
 using CommonUtils.UnityComponents;
+using Liquids2D.GridLines;
 using UnityEngine;
 
 namespace Liquids2D {
@@ -13,6 +14,7 @@ namespace Liquids2D {
 
 	public class LiquidContainer : EnhancedMonoBehaviour, ILiquidContainer {
 		[SerializeField] private Vector2Int gridSize = new(80, 40);
+		[SerializeField] private bool matchAspectRatio;
 		[SerializeField] private Camera2D camera2D;
 		[SerializeField] private Cell cellPrefab;
 		[SerializeField] private Sprite[] liquidFlowSprites;
@@ -59,6 +61,11 @@ namespace Liquids2D {
 		private IGridLineRenderer gridLineRenderer;
 
 		private void Awake() {
+			if (matchAspectRatio) {
+				var ar = (float)Screen.height / (float)Screen.width;
+				gridSize.y = Mathf.RoundToInt(gridSize.x * ar);
+			}
+
 			gridLineRenderer = GetComponent<IGridLineRenderer>();
 
 			// Generate our viewable grid GameObjects

@@ -186,6 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   verbose: 0
   gridSize: {x: 80, y: 40}
+  matchAspectRatio: 1
   camera2D: {fileID: 1665349193}
   cellPrefab: {fileID: 114000012976090690, guid: 92c50d86d81d90d45835ebd90384217d, type: 3}
   liquidFlowSprites:
