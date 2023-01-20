@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a7676b45d5681489f6ca73238e6755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  verbose: 0
   gridSize: {x: 80, y: 40}
   camera2D: {fileID: 1665349193}
   cellPrefab: {fileID: 114000012976090690, guid: 92c50d86d81d90d45835ebd90384217d, type: 3}
@@ -238,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridLinePrefab: {fileID: 114000011244685664, guid: 26fdeb8f28d5d36479af6cbd7bd09f88, type: 3}
   color: {r: 0, g: 0, b: 0, a: 1}
-  enable: 1
+  enable: 0
 --- !u!850595691 &1584461849
 LightingSettings:
   m_ObjectHideFlags: 0

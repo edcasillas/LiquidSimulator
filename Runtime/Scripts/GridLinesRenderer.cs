@@ -3,8 +3,6 @@ using UnityEngine;
 
 namespace Liquids2D {
 	public interface IGridLineRenderer : IUnityComponent {
-		GridLine[] HorizontalLines { get; }
-		GridLine[] VerticalLines { get; }
 		Color Color { get; }
 
 		void CreateGridLines(Vector2 offset, ILiquidContainer container);

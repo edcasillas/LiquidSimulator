@@ -48,8 +48,6 @@ namespace Liquids2D {
 		public Vector2Int GridSize => gridSize;
 
 		private Cell[,] Cells;
-		private GridLine[] HorizontalLines => gridLineRenderer.HorizontalLines;
-		private GridLine[] VerticalLines => gridLineRenderer.VerticalLines;
 
 		[ShowInInspector] public Vector2 HorizontalLinesScale => new(Width, LineWidth);
 		[ShowInInspector] public Vector2 VerticalLinesScale => new(LineWidth, Height);
@@ -119,8 +117,8 @@ namespace Liquids2D {
 			}
 
 			// Fit camera to grid
-			camera2D.Target.position = transform.position + new Vector3(HorizontalLines [0].transform.localScale.x/2f, -VerticalLines [0].transform.localScale.y/2f);
-			camera2D.Target.localScale = new Vector2 (HorizontalLines [0].transform.localScale.x, VerticalLines [0].transform.localScale.y);
+			camera2D.Target.position = transform.position + new Vector3(Width / 2f, -Height / 2f);
+			camera2D.Target.localScale = new Vector2(Width, Height);
 			camera2D.Set();
 		}
 
