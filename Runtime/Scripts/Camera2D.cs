@@ -2,6 +2,7 @@
 using UnityEngine;
 
 namespace Liquids2D {
+	[RequireComponent(typeof(Camera))]
 	public class Camera2D : EnhancedMonoBehaviour {
 		public Transform Area;
 
@@ -21,13 +22,15 @@ namespace Liquids2D {
 			if (w < h)
 				size /= ratio;
 
-			Camera.main.orthographicSize = size;
+			var cam = this.GetCachedComponent<Camera>();
+
+			cam.orthographicSize = size;
 
 			Vector2 position = Area.transform.position;
 
 			Vector3 camPosition = position;
-			Vector3 point = Camera.main.WorldToViewportPoint(camPosition);
-			Vector3 delta = camPosition - Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
+			Vector3 point = cam.WorldToViewportPoint(camPosition);
+			Vector3 delta = camPosition - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
 			Vector3 destination = transform.position + delta;
 
 			transform.position = destination;
@@ -39,7 +42,6 @@ namespace Liquids2D {
 				CurrentScale = Area.transform.localScale;
 				Set();
 			}
-
 		}
 	}
 }
