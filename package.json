@@ -1,0 +1,11 @@
+{
+  "name": "com.ecasillas.liquid2d",
+  "version": "1.0.0",
+  "displayName": "Liquids 2D for Unity",
+  "description": "Liquids 2D for Unity",
+  "unity": "2022.1",
+  "author": {
+    "name": "Ed Casillas",
+    "url": "https://edu.itch.io"
+  }
+}
