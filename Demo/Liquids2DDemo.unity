@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a7676b45d5681489f6ca73238e6755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera2D: {fileID: 1665349193}
   View: {fileID: 457052759}
   cellPrefab: {fileID: 114000012976090690, guid: 92c50d86d81d90d45835ebd90384217d, type: 3}
   liquidFlowSprites:

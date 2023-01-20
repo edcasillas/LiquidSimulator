@@ -6,6 +6,7 @@ namespace Liquids2D {
 		public const int Width = 80;
 		public const int Height = 40;
 
+		[SerializeField] private Camera2D camera2D;
 		[SerializeField] private GameObject View; // Camera view
 		[SerializeField] private Cell cellPrefab;
 		[SerializeField] private Sprite[] liquidFlowSprites;
@@ -103,7 +104,7 @@ namespace Liquids2D {
 			// Fit camera to grid
 			View.transform.position = this.transform.position + new Vector3(HorizontalLines [0].transform.localScale.x/2f, -VerticalLines [0].transform.localScale.y/2f);
 			View.transform.localScale = new Vector2 (HorizontalLines [0].transform.localScale.x, VerticalLines [0].transform.localScale.y);
-			Camera.main.GetComponent<Camera2D> ().Set ();
+			camera2D.Set();
 		}
 
 		// Sets neighboring cell references
@@ -134,7 +135,7 @@ namespace Liquids2D {
 			}
 
 			// Convert mouse position to Grid Coordinates
-			Vector2 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			Vector2 pos = camera2D.Camera.ScreenToWorldPoint (Input.mousePosition);
 			int x = (int)((pos.x - this.transform.position.x) / (CellSize + LineWidth));
 			int y = -(int)((pos.y - this.transform.position.y) / (CellSize + LineWidth));
 

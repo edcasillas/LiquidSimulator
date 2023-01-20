@@ -1,6 +1,5 @@
 ﻿using CommonUtils;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Liquids2D {
 	public enum CellType {

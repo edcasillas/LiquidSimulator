@@ -9,6 +9,14 @@ namespace Liquids2D {
 		[ShowInInspector] public Vector3 CurrentPosition { get; private set; }
 		[ShowInInspector] public Vector3 CurrentScale { get; private set; }
 
+		private new Camera camera;
+		public Camera Camera {
+			get {
+				if (!camera) camera = GetComponent<Camera>();
+				return camera;
+			}
+		}
+
 		public void Set() {
 			var height = Area.localScale.y * 100;
 			var width = Area.localScale.x * 100;
@@ -22,15 +30,13 @@ namespace Liquids2D {
 			if (w < h)
 				size /= ratio;
 
-			var cam = this.GetCachedComponent<Camera>();
-
-			cam.orthographicSize = size;
+			Camera.orthographicSize = size;
 
 			Vector2 position = Area.transform.position;
 
 			Vector3 camPosition = position;
-			Vector3 point = cam.WorldToViewportPoint(camPosition);
-			Vector3 delta = camPosition - cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
+			Vector3 point = Camera.WorldToViewportPoint(camPosition);
+			Vector3 delta = camPosition - Camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
 			Vector3 destination = transform.position + delta;
 
 			transform.position = destination;
