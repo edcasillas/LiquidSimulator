@@ -1,3 +1,5 @@
+NOTE: THIS FORK REQUIRES THE COMMON UTILS PACKAGE: https://github.com/edcasillas/unity-common-utils
+
 # Cellular Automaton 2D Liquid Simulator for Unity
 
 ![Example](http://i.imgur.com/r93Ts49.gif)
