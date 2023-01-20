@@ -62,7 +62,7 @@ namespace Liquids2D {
 			GameObject cellContainer = new GameObject ("Cells");
 			cellContainer.transform.parent = transform;
 
-			if(gridLineRenderer.IsValid()) gridLineRenderer.CreateGridLines(CellSize, LineWidth);
+			if(gridLineRenderer.IsValid()) gridLineRenderer.CreateGridLines(offset, CellSize, LineWidth);
 
 			// Cells
 			for (int x = 0; x < Width; x++) {
@@ -89,7 +89,7 @@ namespace Liquids2D {
 
 			Vector2 offset = this.transform.position;
 
-			if(gridLineRenderer.IsValid()) gridLineRenderer.RenderGridLines(CellSize, LineWidth);
+			if(gridLineRenderer.IsValid()) gridLineRenderer.RenderGridLines(offset, CellSize, LineWidth);
 
 			// Cells
 			for (int x = 0; x < Width; x++) {
