@@ -7,7 +7,6 @@ namespace Liquids2D {
 		public const int Height = 40;
 
 		[SerializeField] private GameObject View; // Camera view
-		[SerializeField] private GridLine gridLinePrefab;
 		[SerializeField] private Cell cellPrefab;
 		[SerializeField] private Sprite[] liquidFlowSprites;
 
@@ -23,7 +22,7 @@ namespace Liquids2D {
 
 		private float PreviousLineWidth = 0;
 
-		private Color LineColor => gridLineRenderer.LColor;
+		private Color LineColor => gridLineRenderer.Color;
 
 		private Color PreviousLineColor = Color.black;
 
@@ -57,33 +56,11 @@ namespace Liquids2D {
 		private void CreateGrid() {
 
 			Cells = new Cell[Width, Height];
-			Vector2 offset = this.transform.position;
+			Vector2 offset = transform.position;
 
 			// Organize the grid objects
-			//GameObject gridLineContainer = new GameObject ("GridLines");
 			GameObject cellContainer = new GameObject ("Cells");
-			//gridLineContainer.transform.parent = this.transform;
-			cellContainer.transform.parent = this.transform;
-
-			// vertical grid lines
-			/*VerticalLines = new GridLine[Width + 1];
-			for (int x = 0; x < Width + 1; x++) {
-				var line = Instantiate(gridLinePrefab);
-				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
-				line.Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (Height*CellSize) + LineWidth * Height + LineWidth));
-				line.transform.parent = gridLineContainer.transform;
-				VerticalLines [x] = line;
-			}
-
-			// horizontal grid lines
-			HorizontalLines = new GridLine[Height + 1];
-			for (int y = 0; y < Height + 1; y++) {
-				var line = Instantiate(gridLinePrefab);
-				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
-				line.Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((Width*CellSize) + LineWidth * Width + LineWidth, LineWidth));
-				line.transform.parent = gridLineContainer.transform;
-				HorizontalLines [y] = line;
-			}*/
+			cellContainer.transform.parent = transform;
 
 			if(gridLineRenderer.IsValid()) gridLineRenderer.CreateGridLines(offset, CellSize, LineWidth);
 
@@ -111,18 +88,6 @@ namespace Liquids2D {
 		private void RefreshGrid() {
 
 			Vector2 offset = this.transform.position;
-
-			// vertical grid lines
-			/*for (int x = 0; x < Width + 1; x++) {
-				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
-				VerticalLines [x].Set (LineColor, new Vector2 (xpos, offset.y), new Vector2 (LineWidth, (Height*CellSize) + LineWidth * Height + LineWidth));
-			}
-
-			// horizontal grid lines
-			for (int y = 0; y < Height + 1; y++) {
-				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
-				HorizontalLines [y] .Set (LineColor, new Vector2 (offset.x, ypos), new Vector2 ((Width*CellSize) + LineWidth * Width + LineWidth, LineWidth));
-			}*/
 
 			if(gridLineRenderer.IsValid()) gridLineRenderer.RenderGridLines(offset, CellSize, LineWidth);
 

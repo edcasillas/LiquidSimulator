@@ -185,7 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   View: {fileID: 457052759}
-  gridLinePrefab: {fileID: 114000011244685664, guid: 26fdeb8f28d5d36479af6cbd7bd09f88, type: 3}
   cellPrefab: {fileID: 114000012976090690, guid: 6078e622ca9a0eb469e237588e34c57c, type: 3}
   liquidFlowSprites:
   - {fileID: 21300000, guid: 91809f9f9bd16fc48bf2e0dd922d2de9, type: 3}
@@ -237,7 +236,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridLinePrefab: {fileID: 114000011244685664, guid: 26fdeb8f28d5d36479af6cbd7bd09f88, type: 3}
-  LineColor: {r: 0, g: 0, b: 0, a: 1}
+  color: {r: 0, g: 0, b: 0, a: 1}
+  enable: 1
 --- !u!850595691 &1584461849
 LightingSettings:
   m_ObjectHideFlags: 0
