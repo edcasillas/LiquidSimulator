@@ -28,6 +28,7 @@ namespace Liquids2D {
 			VerticalLines = new GridLine[Grid.Width + 1];
 			for (int x = 0; x < Grid.Width + 1; x++) {
 				var line = Instantiate(gridLinePrefab);
+				line.name = $"Vertical {x}";
 				float xpos = offset.x + (CellSize * x) + (LineWidth * x);
 				line.Set (color,
 					new Vector2 (xpos, offset.y),
@@ -40,6 +41,7 @@ namespace Liquids2D {
 			HorizontalLines = new GridLine[Grid.Height + 1];
 			for (int y = 0; y < Grid.Height + 1; y++) {
 				var line = Instantiate(gridLinePrefab);
+				line.name = $"Horizontal {y}";
 				float ypos = offset.y - (CellSize * y) - (LineWidth * y);
 				line.Set (color, new Vector2 (offset.x, ypos), new Vector2 ((Grid.Width*CellSize) + LineWidth * Grid.Width + LineWidth, LineWidth));
 				line.transform.parent = gridLineContainer.transform;

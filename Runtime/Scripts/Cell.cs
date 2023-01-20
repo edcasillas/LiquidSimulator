@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using CommonUtils;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Liquids2D {
 	public enum CellType {
@@ -13,7 +15,10 @@ namespace Liquids2D {
 		Left = 3
 	}
 
-	public class Cell : MonoBehaviour {
+	public class Cell : EnhancedMonoBehaviour {
+		[SerializeField] private Color backgroundColor = Color.white;
+		[SerializeField] private Color liquidColor = new Color(0.3490196f, 0.7176471f, 0.8980392f, 0.654902f);
+		[SerializeField] private Color liquidDarkColor = new Color (0, 0.1f, 0.2f, 1);
 
 		// Grid index reference
 		public int X { get ; private set; }
@@ -38,18 +43,14 @@ namespace Liquids2D {
 		public CellType Type { get; private set; }
 
 		// Neighboring cells
-		public Cell Top;
-		public Cell Bottom { get; set; }
-		public Cell Left { get; set; }
-		public Cell Right { get; set; }
+		[ShowInInspector] public Cell Top { get; set; }
+		[ShowInInspector] public Cell Bottom { get; set; }
+		[ShowInInspector] public Cell Left { get; set; }
+		[ShowInInspector] public Cell Right { get; set; }
 
 		// Shows flow direction of cell
 		public int Bitmask { get; set; }
 		public bool[] FlowDirections = new bool[4];
-
-		// Liquid colors
-		private Color Color;
-		private Color DarkColor = new Color (0, 0.1f, 0.2f, 1);
 
 		private SpriteRenderer BackgroundSprite;
 		private SpriteRenderer LiquidSprite;
@@ -65,7 +66,6 @@ namespace Liquids2D {
 			BackgroundSprite = transform.Find ("Background").GetComponent<SpriteRenderer> ();
 			LiquidSprite = transform.Find ("Liquid").GetComponent<SpriteRenderer> ();
 			FlowSprite = transform.Find ("Flow").GetComponent<SpriteRenderer> ();
-			Color = LiquidSprite.color;
 		}
 
 		public void Set(int x, int y, Vector2 position, float size, Sprite[] flowSprites, bool showflow, bool renderDownFlowingLiquid, bool renderFloatingLiquid) {
@@ -105,14 +105,10 @@ namespace Liquids2D {
 
 		// Force neighbors to simulate on next iteration
 		public void UnsettleNeighbors() {
-			if (Top != null)
-				Top.Settled = false;
-			if (Bottom != null)
-				Bottom.Settled = false;
-			if (Left != null)
-				Left.Settled = false;
-			if (Right != null)
-				Right.Settled = false;
+			if (Top) Top.Settled = false;
+			if (Bottom) Bottom.Settled = false;
+			if (Left) Left.Settled = false;
+			if (Right) Right.Settled = false;
 		}
 
 		public void Update() {
@@ -121,7 +117,7 @@ namespace Liquids2D {
 			if (Type == CellType.Solid) {
 				BackgroundSprite.color = Color.black;
 			} else {
-				BackgroundSprite.color = Color.white;
+				BackgroundSprite.color = backgroundColor;
 			}
 
 			// Update bitmask based on flow directions
@@ -160,7 +156,7 @@ namespace Liquids2D {
 			}
 
 			// Set color based on pressure in cell
-			LiquidSprite.color = Color.Lerp (Color, DarkColor, Liquid / 4f);
+			LiquidSprite.color = Color.Lerp (liquidColor, liquidDarkColor, Liquid / 4f);
 		}
 
 	}
