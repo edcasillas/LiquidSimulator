@@ -62,18 +62,9 @@ namespace Liquids2D {
 					cell.ResetFlowDirections ();
 
 					// Validate cell
-					if (cell.Type == CellType.Solid) {
-						cell.Liquid = 0;
-						continue;
-					}
-					if (cell.Liquid == 0)
-						continue;
-					if (cell.Settled)
-						continue;
-					if (cell.Liquid < MinValue) {
-						cell.Liquid = 0;
-						continue;
-					}
+					if (cell.Type == CellType.Solid) cell.Liquid = 0;
+					if (cell.Liquid < MinValue) cell.Liquid = 0;
+					if (cell.Liquid == 0 || cell.Settled) continue;
 
 					// Keep track of how much liquid this cell started off with
 					float startValue = cell.Liquid;
@@ -81,7 +72,7 @@ namespace Liquids2D {
 					flow = 0;
 
 					// Flow to bottom cell
-					if (cell.Bottom != null && cell.Bottom.Type == CellType.Blank) {
+					if (cell.Bottom && cell.Bottom.Type == CellType.Blank) {
 
 						// Determine rate of flow
 						flow = CalculateVerticalFlowValue(cell.Liquid, cell.Bottom) - cell.Bottom.Liquid;
@@ -110,7 +101,7 @@ namespace Liquids2D {
 					}
 
 					// Flow to left cell
-					if (cell.Left != null && cell.Left.Type == CellType.Blank) {
+					if (cell.Left && cell.Left.Type == CellType.Blank) {
 
 						// Calculate flow rate
 						flow = (remainingValue - cell.Left.Liquid) / 4f;
@@ -139,7 +130,7 @@ namespace Liquids2D {
 					}
 
 					// Flow to right cell
-					if (cell.Right != null && cell.Right.Type == CellType.Blank) {
+					if (cell.Right && cell.Right.Type == CellType.Blank) {
 
 						// calc flow rate
 						flow = (remainingValue - cell.Right.Liquid) / 3f;
@@ -168,7 +159,7 @@ namespace Liquids2D {
 					}
 
 					// Flow to Top cell
-					if (cell.Top != null && cell.Top.Type == CellType.Blank) {
+					if (cell.Top && cell.Top.Type == CellType.Blank) {
 
 						flow = remainingValue - CalculateVerticalFlowValue (remainingValue, cell.Top);
 						if (flow > MinFlow)

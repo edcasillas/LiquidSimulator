@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Liquids2D {
 	public enum CellType {
 		Blank,
-		Solid
+		Solid,
+		Invalid
 	}
 
 	public enum FlowDirection {

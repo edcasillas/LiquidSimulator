@@ -1,6 +1,7 @@
 ﻿using CommonUtils;
 using CommonUtils.UnityComponents;
 using Liquids2D.GridLines;
+using System;
 using UnityEngine;
 
 namespace Liquids2D {
@@ -10,6 +11,8 @@ namespace Liquids2D {
 		float LineWidth { get; }
 		Vector2 HorizontalLinesScale { get; }
 		Vector2 VerticalLinesScale { get; }
+
+		Vector2Int WorldPointToGridCoordinate(Vector2 worldPoint);
 	}
 
 	public class LiquidContainer : EnhancedMonoBehaviour, ILiquidContainer {
@@ -55,8 +58,6 @@ namespace Liquids2D {
 		[ShowInInspector] public Vector2 VerticalLinesScale => new(LineWidth, Height);
 
 		private LiquidSimulator LiquidSimulator;
-
-		private bool Fill;
 
 		private IGridLineRenderer gridLineRenderer;
 
@@ -150,51 +151,34 @@ namespace Liquids2D {
 		}
 
 		private void Update () {
-
 			// Update grid lines and cell size
 			if (PreviousCellSize != cellSize || PreviousLineColor != LineColor || PreviousLineWidth != lineWidth) {
 				RefreshGrid ();
 			}
 
-			// Convert mouse position to Grid Coordinates
-			Vector2 pos = camera2D.Camera.ScreenToWorldPoint (Input.mousePosition);
-			int x = (int)((pos.x - this.transform.position.x) / (cellSize + lineWidth));
-			int y = -(int)((pos.y - this.transform.position.y) / (cellSize + lineWidth));
-
-			// Check if we are filling or erasing walls
-			if (Input.GetMouseButtonDown (0)) {
-				if ((x > 0 && x < Cells.GetLength (0)) && (y > 0 && y < Cells.GetLength (1))) {
-					if (Cells [x, y].Type == CellType.Blank) {
-						Fill = true;
-					} else {
-						Fill = false;
-					}
-				}
-			}
-
-			// Left click draws/erases walls
-			if (Input.GetMouseButton (0)) {
-				if (x != 0 && y != 0 && x != gridSize.x - 1 && y != gridSize.y - 1) {
-					if ((x > 0 && x < Cells.GetLength (0)) && (y > 0 && y < Cells.GetLength (1))) {
-						if (Fill) {
-							Cells [x, y].SetType(CellType.Solid);
-						} else {
-							Cells [x, y].SetType(CellType.Blank);
-						}
-					}
-				}
-			}
-
-			// Right click places liquid
-			if (Input.GetMouseButton(1)) {
-				if ((x > 0 && x < Cells.GetLength (0)) && (y > 0 && y < Cells.GetLength (1))) {
-					Cells [x, y].AddLiquid (5);
-				}
-			}
-
 			// Run our liquid simulation
 			LiquidSimulator.Simulate (ref Cells);
 		}
+
+		public void SetCellType(int x, int y, CellType cellType) {
+			if (x != 0 && y != 0 && x != gridSize.x - 1 && y != gridSize.y - 1) { // Check the location is not an edge
+				Cells[x, y].SetType(cellType);
+			}
+		}
+
+		public void AddLiquidAt(int x, int y, int amount) => Cells[x, y].AddLiquid(amount);
+
+		public Vector2Int WorldPointToGridCoordinate(Vector2 worldPoint) => new(
+			(int)((worldPoint.x - transform.position.x) / (cellSize + lineWidth)),
+			-(int)((worldPoint.y - transform.position.y) / (cellSize + lineWidth)));
+
+		public CellType GetCellType(Vector2Int gridPosition) {
+			if (!GridPositionIsValid(gridPosition)) return CellType.Invalid;
+			return Cells[gridPosition.x, gridPosition.y].Type;
+		}
+
+		public bool GridPositionIsValid(Vector2Int gridPosition)
+			=> ((gridPosition.x > 0 && gridPosition.x < Cells.GetLength(0)) && (gridPosition.y > 0 && gridPosition.y < Cells.GetLength(1)));
 
 		// Load some sprites to show the liquid flow directions
 		private void Reset() => liquidFlowSprites = Resources.LoadAll<Sprite>("LiquidFlowSprites");
