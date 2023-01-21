@@ -105,11 +105,11 @@ namespace Liquids2D {
 					Cells [x, y] = cell;
 				}
 			}
-			UpdateNeighbors ();
+			updateNeighbors ();
 		}
 
 		// Live update the grid properties
-		private void RefreshGrid() {
+		private void refreshGrid() {
 
 			Vector2 offset = this.transform.position;
 
@@ -131,7 +131,7 @@ namespace Liquids2D {
 		}
 
 		// Sets neighboring cell references
-		private void UpdateNeighbors() {
+		private void updateNeighbors() {
 			for (int x = 0; x < gridSize.x; x++) {
 				for (int y = 0; y < gridSize.y; y++) {
 					if (x > 0) {
@@ -153,7 +153,7 @@ namespace Liquids2D {
 		private void Update () {
 			// Update grid lines and cell size
 			if (PreviousCellSize != cellSize || PreviousLineColor != LineColor || PreviousLineWidth != lineWidth) {
-				RefreshGrid ();
+				refreshGrid ();
 			}
 
 			// Run our liquid simulation

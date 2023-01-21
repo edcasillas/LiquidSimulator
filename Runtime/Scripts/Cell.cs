@@ -24,7 +24,9 @@ namespace Liquids2D {
 		public int X { get ; private set; }
 		public int Y { get; private set; }
 
-		// Amount of liquid in this cell
+		/// <summary>
+		/// Amount of liquid in this cell
+		/// </summary>
 		public float Liquid { get; set; }
 
 		// Determines if Cell liquid is settled

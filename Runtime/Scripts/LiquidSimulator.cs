@@ -4,30 +4,30 @@ namespace Liquids2D {
 	public class LiquidSimulator {
 
 		// Max and min cell liquid values
-		float MaxValue = 1.0f;
-		float MinValue = 0.005f;
+		private float MaxValue = 1.0f;
+		private float MinValue = 0.005f;
 
 		// Extra liquid a cell can store than the cell above it
-		float MaxCompression = 0.25f;
+		private float MaxCompression = 0.25f;
 
 		// Lowest and highest amount of liquids allowed to flow per iteration
-		float MinFlow = 0.005f;
-		float MaxFlow = 4f;
+		private float MinFlow = 0.005f;
+		private float MaxFlow = 4f;
 
 		// Adjusts flow speed (0.0f - 1.0f)
-		float FlowSpeed = 1f;
+		private float FlowSpeed = 1f;
 
 		// Keep track of modifications to cell liquid values
-		float[,] Diffs;
+		private float[,] Diffs;
 
 		public void Initialize(Cell[,] cells) {
 			Diffs = new float[cells.GetLength (0), cells.GetLength (1)];
 		}
 
 		// Calculate how much liquid should flow to destination with pressure
-		float CalculateVerticalFlowValue(float remainingLiquid, Cell destination)
+		private float calculateVerticalFlowValue(float remainingLiquid, Cell destination)
 		{
-			float sum = remainingLiquid + destination.Liquid;
+			var sum = remainingLiquid + destination.Liquid;
 			float value = 0;
 
 			if (sum <= MaxValue) {
@@ -58,7 +58,7 @@ namespace Liquids2D {
 				for (int y = 0; y < cells.GetLength(1); y++) {
 
 					// Get reference to Cell and reset flow
-					Cell cell = cells [x, y];
+					var cell = cells [x, y];
 					cell.ResetFlowDirections ();
 
 					// Validate cell
@@ -75,7 +75,7 @@ namespace Liquids2D {
 					if (cell.Bottom && cell.Bottom.Type == CellType.Blank) {
 
 						// Determine rate of flow
-						flow = CalculateVerticalFlowValue(cell.Liquid, cell.Bottom) - cell.Bottom.Liquid;
+						flow = calculateVerticalFlowValue(cell.Liquid, cell.Bottom) - cell.Bottom.Liquid;
 						if (cell.Bottom.Liquid > 0 && flow > MinFlow)
 							flow *= FlowSpeed;
 
@@ -161,7 +161,7 @@ namespace Liquids2D {
 					// Flow to Top cell
 					if (cell.Top && cell.Top.Type == CellType.Blank) {
 
-						flow = remainingValue - CalculateVerticalFlowValue (remainingValue, cell.Top);
+						flow = remainingValue - calculateVerticalFlowValue (remainingValue, cell.Top);
 						if (flow > MinFlow)
 							flow *= FlowSpeed;
 
